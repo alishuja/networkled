@@ -1,0 +1,29 @@
+Networkled is a small system tray utility which gives a graphical indication of the received and transmitted traffic. It has been developed using Qt4 and has been licensed under GNU GPL. 
+
+It relies on proc file system and more specifically on the existance of the file "/proc/net/dev"
+
+Usage: networkled interface
+For example:
+$ networkled eth0
+
+It can be used with any system tray following the "Free Desktop System Tray Specification" and has a proc file system.
+
+Compilation:
+Networkled makes use of Qt's qmake utility to generate Makefile. A typical compilation would be done in the following order:
+
+$ qmake
+$ make
+
+Installation:
+Though it is not required but if you want to share networkled with all the users on your system, copy networkled binary to /usr/bin
+
+$ sudo cp networkled /usr/bin/
+
+Networkled can also be executed at any Window Manager Startup. For example, if you want to use it with the system tray tint2 with Openbox, you can add it in your ~/.config/openbox/autostart.sh file. An example autostart.sh file is as below:
+
+#autostart.sh start
+tint2&
+networkled wlan0&
+#autstart.sh stop
+
+For more information, visit: http://github.com/alishuja/networkled
