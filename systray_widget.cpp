@@ -38,7 +38,7 @@ Systray::Systray(std::string iface, QWidget *parent):QWidget(parent){
 	this->iface=new string(iface);
 	traffic = get_traffic(iface);
 	if(traffic.size()==0){
-		cerr <<"Cannot find interface: "<<iface<<endl;
+		cerr <<"networkled: Cannot find interface: "<<iface<<endl;
 		exit(1);
 	}
 	list<string>::iterator iter = traffic.begin();
@@ -63,7 +63,6 @@ Systray::Systray(std::string iface, QWidget *parent):QWidget(parent){
 	layout->addWidget(ok_button);
 	connect(ok_button, SIGNAL(clicked()), this, SLOT(hide_about()));
 	setLayout(layout);
-	//QDesktopWidget * desktop = QApplication::desktop();	
 	move((QApplication::desktop()->width()-(size().width()/2))/2, (QApplication::desktop()->height()-(size().height()/2))/2);
 
 	menu = new QMenu(this);

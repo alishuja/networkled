@@ -23,7 +23,7 @@ using namespace std;
 int main(int argc, char *argv[]){
 	QApplication app(argc, argv);
 	cout<<"networkled: Copyright 2010 Ali Shuja Siddiqui, distributed under the terms of GNU GPL."<<endl;
-	cout<<"For more information visit: http://github.com/alishuja/networkled"<<endl;
+	cout<<"networkled: For more information visit: http://github.com/alishuja/networkled"<<endl;
 	if (app.argc()!=2){
 		cout<<"Usage: "<<"networkled"<<" interface"<<endl;
 		cout<<"for example: "<<"networkled"<<" eth0"<<endl;
