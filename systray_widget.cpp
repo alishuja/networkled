@@ -24,6 +24,7 @@
 #include <QMessageBox>
 #include <QMenu>
 #include <QVBoxLayout>
+#include <QHBoxLayout>
 #include <QLabel>
 #include <QPushButton>
 #include <QDesktopWidget>
@@ -58,12 +59,15 @@ Systray::Systray(std::string iface, QWidget *parent):QWidget(parent){
 	tray_icon->setIcon(*no_data_icon);
 
 	QVBoxLayout *layout =new QVBoxLayout();
-	layout->addWidget(new QLabel(tr("This utility has been created by Ali Shuja Siddiqui.")));
+	QHBoxLayout * h_layout = new QHBoxLayout();
+	layout->addWidget(new QLabel(tr("Copyright 2010 Ali Shuja Siddiqui.\nhttp://github.com/alishuja/networkled")));
 	QPushButton * ok_button = new QPushButton(tr("Ok"));
-	layout->addWidget(ok_button);
+	h_layout->addSpacing(100);
+	h_layout->addWidget(ok_button);
+	h_layout->addSpacing(100);
+	layout->addLayout(h_layout);
 	connect(ok_button, SIGNAL(clicked()), this, SLOT(hide_about()));
 	setLayout(layout);
-	move((QApplication::desktop()->width()-(size().width()/2))/2, (QApplication::desktop()->height()-(size().height()/2))/2);
 
 	menu = new QMenu(this);
 	connect(menu->addAction("About"), SIGNAL(triggered()), this, SLOT(show_about()));
@@ -120,6 +124,7 @@ void Systray::updateTraffic(){
 	}
 }
 void Systray::show_about(){
+	move((QApplication::desktop()->width()/2)-200, (QApplication::desktop()->height()/2)-50);
 	this->show();
 }
 void Systray::hide_about(){
