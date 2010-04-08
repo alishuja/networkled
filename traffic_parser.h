@@ -26,7 +26,6 @@
 #include <string>
 #include <algorithm>
 using namespace std;
-char * strip_whitespaces(char *);
 list<string> get_interface_list();
 list<string> get_traffic(string);
 

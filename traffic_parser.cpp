@@ -24,16 +24,20 @@ list<string> get_interface_list(){
 	fstream input;
 	char output[256];
 	char *token = NULL;
+	char *iface = NULL;
 
 	input.open(filename.c_str(), fstream::in);
+	//discard first two lines, contain description of values 
 	input.getline(output, 256);
 	input.getline(output, 256);
 	while(input.good()){
 		input.getline(output, 256);
-		token=strtok(output, " ");
+		token=strtok(output, ":");
 		if(token !=NULL){
-			token[strlen(token)-1]='\0';
-			int_list.push_back(string(token));
+			iface= new char[20];
+			strncpy(iface, token, 20);
+			while (*iface==' ' && iface!='\0')iface++;
+			int_list.push_back(string(iface));
 		}
 
 	}
@@ -54,6 +58,7 @@ list<string> get_traffic(string interface){
 	char *iface = NULL;
 
 	input.open(filename.c_str(), fstream::in);
+	//discard first two lines, contain description of values 
 	input.getline(output, 256);
 	input.getline(output, 256);
 	
@@ -93,18 +98,6 @@ list<string> get_traffic(string interface){
 	return traffic_list;
 }
 
-char * strip_whitespaces(char *input){
-	if(input==NULL)
-		return NULL;
-	char *array=(char *) calloc(strlen(input) , sizeof(char));  
-	strncpy(array, input, strlen(input));
-	unsigned int count=0;
-	while(count <strlen(input) && input[count]==' '){
-		count++;
-	}
-	array+=count;
-	return array;
-}
 /*
 int main(int argc, char * argv[]){
 	list <string> a = get_interface_list();

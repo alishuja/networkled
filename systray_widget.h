@@ -35,12 +35,14 @@ class Systray:public QWidget{
 		void hide_about();
 
 	private:
+		//variables to store sent and received traffic
 		std::string * received;
 		std::string * sent;
 		std::string * iface;
 		QSystemTrayIcon * tray_icon;
 		
 		QMenu * menu;
+		//icons
 		QIcon * no_data_icon;
 		QIcon * sent_icon;
 		QIcon * recv_icon;
@@ -50,7 +52,7 @@ class Systray:public QWidget{
 			SENT, 
 			RECV,
 			SENT_RECV};
-		POSSIBLE_STATES state;
+		POSSIBLE_STATES state;//stores the current state of traffic
 };
 
 #endif

@@ -38,26 +38,27 @@ Systray::Systray(std::string iface, QWidget *parent):QWidget(parent){
 	
 	this->iface=new string(iface);
 	traffic = get_traffic(iface);
-	if(traffic.size()==0){
+	if(traffic.size()==0){//checks for interface, can also use get_interface_list() of traffic_parser.h here
 		cerr <<"networkled: Cannot find interface: "<<iface<<endl;
-		exit(1);
+		exit(1); //TODO: dirty way of exiting an application, have to come up with a clean way
 	}
 	list<string>::iterator iter = traffic.begin();
 	received = new string(*iter);
 	iter++;
 	sent = new string(*iter);
-	state=NO_DATA;
+	state=NO_DATA;//initializing state with NO_DATA
 
 	tray_icon = new QSystemTrayIcon();
 	QTimer * timer = new QTimer(this);
-	connect(timer, SIGNAL(timeout()), this, SLOT(updateTraffic()));
-	
+	connect(timer, SIGNAL(timeout()), this, SLOT(updateTraffic()));//timeout of timer will force tray icon to update traffic
+	//using in-binary resources to enable portability
 	no_data_icon = new QIcon(":images/no-data.png");
 	sent_icon = new QIcon(":images/sent.png");
 	recv_icon = new QIcon(":images/recv.png");
 	sent_recv_icon = new QIcon(":images/sent-recv.png");
-	tray_icon->setIcon(*no_data_icon);
+	tray_icon->setIcon(*no_data_icon); //NO_DATA, initial state
 
+	//Creating about dialog
 	QVBoxLayout *layout =new QVBoxLayout();
 	QHBoxLayout * h_layout = new QHBoxLayout();
 	layout->addWidget(new QLabel(tr("Copyright 2010 Ali Shuja Siddiqui.\nhttp://github.com/alishuja/networkled")));
@@ -69,15 +70,16 @@ Systray::Systray(std::string iface, QWidget *parent):QWidget(parent){
 	connect(ok_button, SIGNAL(clicked()), this, SLOT(hide_about()));
 	setLayout(layout);
 
+	//setting up tary icon menu
 	menu = new QMenu(this);
 	connect(menu->addAction("About"), SIGNAL(triggered()), this, SLOT(show_about()));
 	connect(menu->addAction("Quit"), SIGNAL(triggered()), qApp, SLOT(quit()));
 	tray_icon->setContextMenu(menu);
-	timer->start(1000);
+	timer->start(1000);//starting the timer for update
 	tray_icon->show();
 }
 
-void Systray::updateTraffic(){
+void Systray::updateTraffic(){//slot for updating icon state and traffic tooltip
 	list<string> traffic;
 	string current_sent;
 	string current_recv;
@@ -93,7 +95,9 @@ void Systray::updateTraffic(){
 		current_recv = *iter;
 		iter++;
 		current_sent = *iter;
-		
+		//state changes when there is a difference in traffic,
+		//checking previous state before changing the current state decreases
+		//flickering on tray icon
 		if(current_sent.compare(*sent)==0 && current_recv.compare(*received)==0 && state!=NO_DATA){
 			tray_icon->setIcon(*no_data_icon);
 			state=NO_DATA;
@@ -110,6 +114,8 @@ void Systray::updateTraffic(){
 			tray_icon->setIcon(*sent_recv_icon);
 			state=SENT_RECV;
 		}
+		//sets up tooltip text
+		//TODO: find a way to force repaint of tooltip on update traffic while tooltip is active
 		iter = traffic.begin();
 		*received = *(iter);
 		iter++;
@@ -124,7 +130,7 @@ void Systray::updateTraffic(){
 	}
 }
 void Systray::show_about(){
-	move((QApplication::desktop()->width()/2)-200, (QApplication::desktop()->height()/2)-50);
+	move((QApplication::desktop()->width()/2)-200, (QApplication::desktop()->height()/2)-50);//reset placement of about dialog
 	this->show();
 }
 void Systray::hide_about(){
