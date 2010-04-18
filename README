@@ -15,9 +15,11 @@ $ qmake
 $ make
 
 Installation:
-Though it is not required but if you want to share networkled with all the users on your system, copy networkled binary to /usr/bin
+For installation, for example if you want to install in your /usr/bin (with root access) do:
 
-$ sudo cp networkled /usr/bin/
+# make INSTALL_ROOT=/usr install
+or
+$ sudo make INSTALL_ROOT=/usr install
 
 Networkled can also be executed at any Window Manager Startup. For example, if you want to use it with the system tray tint2 with Openbox, you can add it in your ~/.config/openbox/autostart.sh file. An example autostart.sh file is as below:
 

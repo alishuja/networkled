@@ -11,3 +11,9 @@ INCLUDEPATH += .
 HEADERS += systray_widget.h traffic_parser.h
 SOURCES += main.cpp systray_widget.cpp traffic_parser.cpp
 RESOURCES += networkled.qrc
+
+unix {
+ TARGET = networkled
+ target.path +=$${PREFIX}/bin/
+ INSTALLS +=target
+}
