@@ -25,8 +25,10 @@
 #include <list>
 #include <string>
 #include <algorithm>
+#include <sstream>
 using namespace std;
 list<string> get_interface_list();
 list<string> get_traffic(string);
+unsigned long long get_bytes(string);
 
 #endif

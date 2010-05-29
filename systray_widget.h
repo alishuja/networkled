@@ -53,6 +53,7 @@ class Systray:public QWidget{
 			RECV,
 			SENT_RECV};
 		POSSIBLE_STATES state;//stores the current state of traffic
+		unsigned long long bytes_sent, bytes_received; //number of bytes sent/received used in calculation of down/up link data transfer speed
 };
 
 #endif

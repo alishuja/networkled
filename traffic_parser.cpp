@@ -98,6 +98,18 @@ list<string> get_traffic(string interface){
 	return traffic_list;
 }
 
+unsigned long long get_bytes(std::string traffic){
+	char c_traffic[100];
+	char * token = NULL;
+	unsigned long long l_traffic=-1;
+	strncpy(c_traffic, traffic.c_str(), 100);
+	token = strtok(c_traffic, "(");
+	token = strtok(NULL, ")");
+	if (token!=NULL){
+		istringstream(string(token)) >> l_traffic;
+	}
+	return l_traffic;
+}
 /*
 int main(int argc, char * argv[]){
 	list <string> a = get_interface_list();

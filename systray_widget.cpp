@@ -28,6 +28,7 @@
 #include <QLabel>
 #include <QPushButton>
 #include <QDesktopWidget>
+#include <sstream>
 
 #include "systray_widget.h"
 #include "traffic_parser.h"
@@ -42,6 +43,8 @@ Systray::Systray(std::string iface, QWidget *parent):QWidget(parent){
 		cerr <<"networkled: Cannot find interface: "<<iface<<endl;
 		exit(1); //TODO: dirty way of exiting an application, have to come up with a clean way
 	}
+	bytes_sent = 0;
+	bytes_received = 0;
 	list<string>::iterator iter = traffic.begin();
 	received = new string(*iter);
 	iter++;
@@ -84,6 +87,11 @@ void Systray::updateTraffic(){//slot for updating icon state and traffic tooltip
 	string current_sent;
 	string current_recv;
 	list<string>::iterator iter;
+	stringstream str_down_stream, str_up_stream;
+	string diff_down_string;
+	string diff_up_string;
+	unsigned long long current_bytes_sent=0;
+	unsigned long long current_bytes_received=0;
 
 	traffic = get_traffic(*iface);
 	if(traffic.size()==0){
@@ -126,7 +134,30 @@ void Systray::updateTraffic(){//slot for updating icon state and traffic tooltip
 		tip.append(sent->c_str());
 		tip.append("\nPackets(bytes) received: ");
 		tip.append(received->c_str());
+		current_bytes_sent=get_bytes(*sent);
+		current_bytes_received=get_bytes(*received);
+		tip.append("\n");
+	
+		//Calculation of downlink speed and type casting from 
+		//unsigned long long to string
+		str_down_stream<<(current_bytes_received - bytes_received);
+		str_down_stream >> diff_down_string;
+		tip.append("Down Speed: ");
+		tip.append(diff_down_string.c_str());
+		tip.append("KB/s");
+	
+		//Calculation of uplink speed and type casting from
+		//unsigned long long to string
+		str_up_stream<<(current_bytes_sent - bytes_sent);
+		str_up_stream >> diff_up_string;
+		tip.append(", Up Speed: ");
+		tip.append(diff_up_string.c_str());
+		tip.append("KB/s");
+		
 		tray_icon->setToolTip(tip);
+		//updating traffic variables
+		bytes_sent=current_bytes_sent;
+		bytes_received = current_bytes_received;
 	}
 }
 void Systray::show_about(){
