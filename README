@@ -26,6 +26,6 @@ Networkled can also be executed at any Window Manager Startup. For example, if y
 #autostart.sh start
 tint2&
 networkled wlan0&
-#autstart.sh stop
+#autostart.sh stop
 
 For more information, visit: http://github.com/alishuja/networkled
